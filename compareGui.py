@@ -5,9 +5,6 @@ DNN object detector
 Green bounding box / centroid = User defined (Correct)
 Blue bounding box / centroid = DNN Object Detector (Prediction)
 Red contours / centroid = CV2 Color Object Detector (Prediction)
-
-Writes distances to output file:
-filename cvDetector dnnDetector
 """
 
 from xml.dom.minidom import parse
@@ -33,9 +30,6 @@ ap.add_argument("-i", "--input_dir", required=True,
 
 ap.add_argument("-m", "--model_path", required=False,
                 help="Path to DNN model, defaults to 144k")
-
-ap.add_argument("-o", "--output_dir", required=True,
-                help="Output path of txt")
 
 args = vars(ap.parse_args())
 
@@ -121,8 +115,7 @@ centroid_radi = 7
 # Initialize DNN graph once to
 # lower latency
 with detection_graph.as_default():
-        with tf.Session(graph=detection_graph) as sess:
-            f = open(args["output_dir"], "a")
+        with tf.Session(graph=detection_graph) as sess:         
             for i in xmls:
                 dom = parse(i)
                 
@@ -171,24 +164,30 @@ with detection_graph.as_default():
                     cv2.rectangle(img, (xminDNN, ymaxDNN), (xmaxDNN, yminDNN), (255,0,0), 2)
                     cv2.circle(img, (xCenterDNN, yCenterDNN), centroid_radi, (255, 0,0), -1)
 
-                    # Auto skip if too big
+                    # Auto resizer if too big
                     if width > 640 or height > 480:
-                        continue
+                        img = cv2.resize(img, (640, 480))
+                        # print("Auto Resized: %s" % filename)
+
+                    # cv2.namedWindow("Image", cv2.WINDOW_NORMAL)
+                    cv2.imshow("Original", img)
 
                     # CV2 Distance from actual
                     try:
                         cvDistance = calculateDistance(chassisCentroid[0], chassisCentroid[1], xCenter, yCenter)
+                        print(colored("CV2 Distance: ", color="red"), cvDistance)
                     except:
-                        cvDistance = None
+                        print(colored("CV2 Distance: N/A", color="red"))
+
                     # DNN Distance from actual
                     try:
                         dnnDistance = calculateDistance(xCenterDNN, yCenterDNN, xCenter, yCenter)
+                        print(colored("DNN Distance: ", color="blue"), dnnDistance)
                     except:
-                        dnnDistance = None
+                        print(colored("DNN Distance: ", color="blue"))
 
-                    print(filename)
-                    final = str(filename) + " " + str(cvDistance) + " " + str(dnnDistance) + "\n"
-                    f.write(final)
-
-f.close()
-print("Done")
+                    print("\n")
+                    # Keypress moves to next image, q exits
+                    c = cv2.waitKey(0)
+                    if 'q' == chr(c & 255):
+                        exit(0)
