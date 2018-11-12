@@ -66,7 +66,6 @@ def writeToTxt(nameDict, filename):
 
 	f.close()
 
-
 files = get_xml_files(args["input_dir"])
 for i in files:
 	print(i)
