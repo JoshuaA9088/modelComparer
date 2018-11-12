@@ -148,7 +148,8 @@ with detection_graph.as_default():
 
                     # Read the file based on the xml
                     img = cv2.imread(args["input_dir"] + filename)
-                    
+                    origPic = img.copy()
+
                     # Manual Data - Correct
                     cv2.rectangle(img, (xmin, ymax), (xmax, ymin), (0,255,0), 2)
                     cv2.circle(img, (xCenter, yCenter), centroid_radi, (0, 255,0), -1)
@@ -160,9 +161,12 @@ with detection_graph.as_default():
                         cv2.circle(img, chassisCentroid, centroid_radi, (0,0,255), -1)
 
                     # Custom Model Data - Prediction
-                    xminDNN, xmaxDNN, yminDNN, ymaxDNN, xCenterDNN, yCenterDNN = customModel(img)
-                    cv2.rectangle(img, (xminDNN, ymaxDNN), (xmaxDNN, yminDNN), (255,0,0), 2)
-                    cv2.circle(img, (xCenterDNN, yCenterDNN), centroid_radi, (255, 0,0), -1)
+                    try:
+                        xminDNN, xmaxDNN, yminDNN, ymaxDNN, xCenterDNN, yCenterDNN = customModel(origPic)
+                        cv2.rectangle(img, (xminDNN, ymaxDNN), (xmaxDNN, yminDNN), (255,0,0), 2)
+                        cv2.circle(img, (xCenterDNN, yCenterDNN), centroid_radi, (255, 0,0), -1)
+                    except:
+                        pass
 
                     # Auto resizer if too big
                     if width > 640 or height > 480:
@@ -172,6 +176,7 @@ with detection_graph.as_default():
                     # cv2.namedWindow("Image", cv2.WINDOW_NORMAL)
                     cv2.imshow("Original", img)
 
+                    print(colored("Image: {}".format(filename), color="green"))
                     # CV2 Distance from actual
                     try:
                         cvDistance = calculateDistance(chassisCentroid[0], chassisCentroid[1], xCenter, yCenter)

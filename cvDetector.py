@@ -18,19 +18,15 @@ def click(event, x, y, flags, param):
 def calibrate(img):
     if type(img) == str:
         img = cv2.imread(img)
-    
-    cv2.namedWindow("img")
-    cv2.setMouseCallback("img", click)
-    cv2.imshow("img", img)
+    chassisImg = cv2.cvtColor(img, cv2.COLOR_BGR2LUV)
 
-    print("Click then press a key")
+    cv2.imshow("Calibration Image", chassisImg)
 
     cv2.waitKey(0)
-    cv2.destroyWindow("img")
 
-def show_video(jpg):
-    redUpper = np.array([70, 150, 255], dtype=np.uint8) # Upper threshold for chassis ID
-    redLower = np.array([0, 110 , 0], dtype=np.uint8) #Lower threshold for chassis ID
+def show_video(jpg, draw=False):
+    redUpper = np.array([120, 130, 150], dtype=np.uint8) # Upper threshold for chassis ID
+    redLower = np.array([0, 100 , 120], dtype=np.uint8) #Lower threshold for chassis ID
 
     greenUpper = np.array([0, 200, 100], dtype=np.uint8) # Upper threshold for board ID
     greenLower = np.array([0, 0, 0], dtype=np.uint8) # Lower threshold for board ID
@@ -64,6 +60,12 @@ def show_video(jpg):
 
     cv2.drawContours(chassisImg, contoursChassis, -1, (0,255,0), 2) #Draw countours on alternate color space chassis image
     cv2.drawContours(boardImg, contoursBoard, -1, (0,255,0), 2) #Draw countours on alternate color space board image
+
+    if draw != False:
+        cv2.imshow("chassis", chassisImg)
+        cv2.imshow("Original", origPic)
+
+        cv2.waitKey(0)
 
     try:
         chassisCentroid = calcCentroids(contoursChassis)
@@ -101,7 +103,10 @@ def calcCentroids(contour_list_chassis):
 
 if __name__ == "__main__":
 
-    path = "images/frameColor2.jpg"
+    # path = "images/frameColorW56.jpg"
+    # path = "images/frameColor238.jpg"
+    path = "images/frame192.jpg"
+
     im = cv2.imread(path)
 
-    show_video(im)
+    show_video(im, draw=True)
