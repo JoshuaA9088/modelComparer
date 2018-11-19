@@ -68,7 +68,7 @@ def show_video(jpg, draw=False):
         cv2.waitKey(0)
 
     try:
-        chassisCentroid = calcCentroids(contoursChassis)
+        chassisCentroid = calcCentroids(contoursChassis)           
         return contoursChassis, chassisCentroid
     except:
         return contoursChassis, None
@@ -108,5 +108,9 @@ if __name__ == "__main__":
     path = "images/frame192.jpg"
 
     im = cv2.imread(path)
+    contoursChassis, chassisCentroid = show_video(im)
+    cv2.circle(im, chassisCentroid, 7, (0,0,255), -1)
+    cv2.drawContours(im, contoursChassis, -1, (0,255,0), 2)
 
-    show_video(im, draw=True)
+    cv2.imshow("Img", im)
+    cv2.waitKey(0)
