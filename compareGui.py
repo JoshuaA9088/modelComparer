@@ -175,6 +175,7 @@ with detection_graph.as_default():
                     # Auto resizer if too big
                     if width > 640 or height > 480:
                         img = cv2.resize(img, (640, 480))
+                        continue
                         # print("Auto Resized: %s" % filename)
 
                     # cv2.namedWindow("Image", cv2.WINDOW_NORMAL)
