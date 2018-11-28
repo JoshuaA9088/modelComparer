@@ -1,9 +1,20 @@
+import argparse
 import numpy as np
 import math
 import matplotlib.pyplot as plt; plt.rcdefaults()
 import matplotlib.pyplot as plt
 
-f = open("data.txt", "r")
+ap = argparse.ArgumentParser()
+ap.add_argument("-i", "--input_dir", required=True,
+                help="Input path of data file")
+
+args = vars(ap.parse_args())
+
+try:
+    f = open(args["input_dir"], "r")
+except FileNotFoundError or FileExistsError:
+    print("Input path not valid")
+    exit(0)
 
 cvDetector = 0
 dnnDetector = 0
