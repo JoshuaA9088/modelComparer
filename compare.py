@@ -163,9 +163,14 @@ with detection_graph.as_default():
 
                     # CV Data - Prediction
                     contoursChassis, chassisCentroid = cvDetector.show_video(img)
-                    cv2.drawContours(img, contoursChassis, -1, (0,0,255), 2)
-                    if chassisCentroid != None:
-                        cv2.circle(img, chassisCentroid, centroid_radi, (0,0,255), -1)
+                    c = max(contoursChassis, key=cv2.contourArea)
+                    cv2.drawContours(img, c, -1, (0, 0, 255), 2)
+                    x, y, w, h = cv2.boundingRect(c)
+
+                    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
+                    chassisCentroid = (int((x+x+w) / 2), int((y+y+h) / 2))
+                    cv2.circle(img, chassisCentroid,
+                               centroid_radi, (0, 0, 255), -1)
 
                     # Custom Model Data - Prediction
                     try:
