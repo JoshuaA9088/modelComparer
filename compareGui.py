@@ -4,7 +4,7 @@ DNN object detector
 
 Green bounding box / centroid = User defined (Correct)
 Blue bounding box / centroid = DNN Object Detector (Prediction)
-Red contours / centroid = CV2 Color Object Detector (Prediction)
+Red contours and bounding box / centroid = CV2 Color Object Detector (Prediction)
 """
 
 from xml.dom.minidom import parse
