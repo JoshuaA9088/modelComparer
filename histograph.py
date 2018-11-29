@@ -46,7 +46,7 @@ for i in range(len(cats)):
         
         # Appropriately scale the axis
         maxfreq = n.max()
-        plt.ylim(ymax=np.ceil(maxfreq / 10) * 10 if maxfreq % 10 else maxfreq + 20)
+        plt.ylim(top=np.ceil(maxfreq / 10) * 10 if maxfreq % 10 else maxfreq + 20)
         plt.xlim(0, 20)
         plt.xticks(np.arange(0, 20, .5), rotation=90)
         plt.show()
