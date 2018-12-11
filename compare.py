@@ -58,7 +58,7 @@ def calculateDistance(x1,y1,x2,y2):
 
 # DNN Necessary Variables
 CWD_PATH = os.getcwd()
-MODEL_NAME = 'graph_144k/'
+MODEL_NAME = 'scribbler_graph_board_v2/'
 PATH_TO_CKPT = '{}frozen_inference_graph.pb'.format(MODEL_NAME)
 PATH_TO_LABELS = 'object-detection.pbtxt'
 NUM_CLASSES = 2

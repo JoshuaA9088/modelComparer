@@ -3,6 +3,7 @@ from matplotlib import colors
 import matplotlib
 import matplotlib.pyplot as plt
 import statistics
+from scipy import stats
 
 import T_test
 
@@ -11,7 +12,7 @@ dnnDetector = []
 points = 0
 cats = [cvDetector, dnnDetector]
 catNames = ["cvDetector", "dnnDetector"]
-f = open("data.txt", "r")
+f = open("chassis.txt", "r")
 
 for i in f.readlines():
     if i.split()[1] != "None" and i.split()[2] != "None":
@@ -58,4 +59,14 @@ plt.title("CV v. DNN Box Plot")
 plt.xlabel("Type of Detector")
 plt.ylabel("Distance from Actual (# of Pixels)")
 
+if np.var(cvDetector) == np.var(dnnDetector):
+    T = stats.ttest_ind(cvDetector, dnnDetector)
+    print("Variance is the same")
+else:
+    # equal_var=False -> Variance of 2 data sets is not the same
+    T = stats.ttest_ind(cvDetector, dnnDetector, equal_var=False)
+    print("Variance is different")
+
+# T Test 
+print(T)
 plt.show()
