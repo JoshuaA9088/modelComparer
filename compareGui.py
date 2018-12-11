@@ -92,6 +92,7 @@ def customModel(image_np):
     scores = np.squeeze(scores)
 
     # Chassis Centroid
+    print(len(scores))
     if scores[0] > .5:
         box = tuple(boxes[0].tolist())
         yMin = int(box[0] * height)
