@@ -19,6 +19,7 @@ ap.add_argument("-i", "--input_dir", required=True,
 
 ap.add_argument("-t", "--input_txt", required=True,
                 help="Input dir TXT txt file of coordinates")
+
 args = vars(ap.parse_args())
 
 def calculateDistance(x1, y1, x2, y2):
@@ -146,7 +147,7 @@ with detection_graph.as_default():
             except: pass
 
             cv2.imshow('img', img)
-
+            print(args['input_dir']+l[0])
             c = cv2.waitKey(0)
             if 'q' == chr(c & 255):
                 exit(0)
