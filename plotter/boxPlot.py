@@ -13,7 +13,7 @@ dnnBoard = []
 points = 0
 cats = [cvChassis, cvBoard, dnnChassis ,dnnBoard]
 catNames = ["cvChassis", "cvChassis", "dnnChassis", "dnnBoard"]
-f = open("distances_board.txt", "r")
+f = open("new.txt", "r")
 
 for i in f.readlines():
     if i.split()[1] != "None" and i.split()[2] != "None" and i.split()[3] != "None" and i.split()[4] != "None":

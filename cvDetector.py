@@ -6,8 +6,6 @@ import time
 import sys
 import threading
 
-# Initial Variable Decleratio
-
 # Handles click on Original Picture
 def click(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
@@ -19,14 +17,12 @@ def calibrate(img):
     if type(img) == str:
         img = cv2.imread(img)
     chassisImg = cv2.cvtColor(img, cv2.COLOR_BGR2LUV)
-
     cv2.imshow("Calibration Image", chassisImg)
-
     cv2.waitKey(0)
 
 def show_video(jpg, draw=False):
-    redUpper = np.array([120, 130, 150], dtype=np.uint8) # Upper threshold for chassis ID
-    redLower = np.array([0, 100 , 120], dtype=np.uint8) #Lower threshold for chassis ID
+    redUpper = np.array([100, 145, 150], dtype=np.uint8) # Upper threshold for chassis ID
+    redLower = np.array([50, 100 , 120], dtype=np.uint8) #Lower threshold for chassis ID
 
     greenUpper = np.array([0, 200, 100], dtype=np.uint8) # Upper threshold for board ID
     greenLower = np.array([0, 0, 0], dtype=np.uint8) # Lower threshold for board ID
@@ -77,21 +73,6 @@ def show_video(jpg, draw=False):
         return contoursChassis, chassisCentroid
     except:
         return contoursChassis, None
-    
-    # try:
-    # cv2.circle(origPic, chassisCentroid, 10, (0, 255, 0), -1)
-    # except:
-    #     pass
-
-    
-    # cv2.circle(origPic, contoursChassis, 10, (0,0,255), -1)
-    # cv2.circle(origPic, contoursBoard, 10, (0,255,0), -1)
-
-    # Keep the mouse click even through frame updates
-    # cv2.imshow('Original', origPic)
-    # cv2.imshow('Chassis Img', chassisImg)
-    # cv2.imshow('Board Img', boardImg)
-
 
 ### Centroid Calculations ###
 # All centroid calculations use the picked contours #

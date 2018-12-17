@@ -207,7 +207,6 @@ with detection_graph.as_default():
                         # " " + str(dnnDistance) + "\n"
             # f.write(final)
 
-            c = cv2.waitKey(0)
             if 'q' == chr(c & 255):
                 exit(0)
 

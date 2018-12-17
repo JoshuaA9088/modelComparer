@@ -37,11 +37,11 @@ def increase_brightness(img, value=30):
 
 def show_video(jpg, draw=False):
     # B G R
-    redUpper = np.array([150, 170, 130], dtype=np.uint8) # Upper threshold for chassis ID
-    redLower = np.array([70, 50 , 90], dtype=np.uint8) #Lower threshold for chassis ID
+    redUpper = np.array([110, 255, 255], dtype=np.uint8) # Upper threshold for chassis ID
+    redLower = np.array([0, 100 , 100], dtype=np.uint8) #Lower threshold for chassis ID
 
-    greenUpper = np.array([188, 120, 90], dtype=np.uint8) # Upper threshold for board ID
-    greenLower = np.array([50, 50, 50], dtype=np.uint8) # Lower threshold for board ID
+    greenUpper = np.array([255, 150, 150], dtype=np.uint8) # Upper threshold for board ID
+    greenLower = np.array([160, 90, 0], dtype=np.uint8) # Lower threshold for board ID
 
     kernel = np.ones((5,5), np.uint8)
 
@@ -87,12 +87,13 @@ def calcCentroids(contour_list_chassis):
 
 if __name__ == "__main__":
 
-    path = "images/frame192.jpg"
+    path = "new/frameColor100.jpg"
 
     im = cv2.imread(path)
-    contoursChassis, chassisCentroid = show_video(im)
-    cv2.circle(im, chassisCentroid, 7, (0,0,255), -1)
-    cv2.drawContours(im, contoursChassis, -1, (0,255,0), 2)
+    contoursChassis, contoursBoard = show_video(im)
+    # cv2.circle(im, chassisCentroid, 7, (0,0,255), -1)
+    cv2.drawContours(im, contoursBoard, -1, (255,0,0), 2)
+    cv2.drawContours(im, contoursChassis, -1, (0,0,255), 2)
 
     cv2.imshow("Img", im)
     cv2.waitKey(0)
