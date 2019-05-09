@@ -12,7 +12,7 @@ dnnBoard = []
 
 points = 0
 cats = [cvChassis, cvBoard, dnnChassis ,dnnBoard]
-catNames = ["cvChassis", "cvChassis", "dnnChassis", "dnnBoard"]
+catNames = ["cvChassis", "cvBoard", "dnnChassis", "dnnBoard"]
 f = open("new.txt", "r")
 
 for i in f.readlines():
@@ -60,7 +60,7 @@ for flier in bp['fliers']:
 
 plt.title("CV v. DNN Box Plot")
 plt.xlabel("Type of Detector")
-plt.ylabel("Distance from Actual (# of Pixels)")
+plt.ylabel("Distance from Actual (# of Pixels)\n (Lower is Better)")
 
 # if np.var(cvDetector) == np.var(dnnDetector):
 #     T = stats.ttest_ind(cvDetector, dnnDetector)

@@ -54,7 +54,7 @@ y = [cvChassis, dnnChassis, cvBoard, dnnBoard]
 
 plt.bar(y_pos, y, align='center', alpha=0.5)
 plt.xticks(y_pos, objects)
-plt.ylabel("Average Distance from Actual (# of Pixels)")
+plt.ylabel("Average Distance from Actual (# of Pixels)\n (Lower is Better)")
 plt.title("Object Detection Method vs. Average Distance from Actual")
 
 plt.show()

@@ -46,7 +46,7 @@ for i in range(len(cats)):
         plt.grid(axis='y', alpha=0.75)
 
         # Label the axis/title
-        plt.xlabel('Distance from actual (# Pixels)')
+        plt.xlabel('Distance from actual (# Pixels)\n (Lower is Better)')
         plt.ylabel('Frequency')
         plt.title('{} Histogram'.format(catNames[i]))
         

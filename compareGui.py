@@ -155,16 +155,21 @@ with detection_graph.as_default():
                     cv2.rectangle(img, (xmin, ymax), (xmax, ymin), (0,255,0), 2)
                     cv2.circle(img, (xCenter, yCenter), centroid_radi, (0, 255,0), -1)
 
-                    # CV Data - Prediction
-                    contoursChassis, chassisCentroid = cvDetector.show_video(img)
-                    c = max(contoursChassis, key=cv2.contourArea)
-                    cv2.drawContours(img, c, -1, (0,0,255), 2)
-                    x, y, w, h = cv2.boundingRect(c)
+                    try:
 
-                    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
-                    chassisCentroid = (int((x+x+w) / 2), int((y+y+h) / 2))
-                    cv2.circle(img, chassisCentroid, centroid_radi, (0,0,255), -1)
+                        # CV Data - Prediction
+                        contoursChassis, chassisCentroid = cvDetector.show_video(img)
+                        c = max(contoursChassis, key=cv2.contourArea)
+                        cv2.drawContours(img, c, -1, (0,0,255), 2)
+                        x, y, w, h = cv2.boundingRect(c)
 
+                        cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
+                        chassisCentroid = (int((x+x+w) / 2), int((y+y+h) / 2))
+                        cv2.circle(img, chassisCentroid, centroid_radi, (0,0,255), -1)
+
+                    except:
+                        pass
+                        
                     # Custom Model Data - Prediction
                     try:
                         xminDNN, xmaxDNN, yminDNN, ymaxDNN, xCenterDNN, yCenterDNN = customModel(origPic)
