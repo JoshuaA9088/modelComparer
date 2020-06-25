@@ -1,8 +1,9 @@
 # USAGE
 # python click_and_crop.py --image jurassic_park_kitchen.jpg
-
+# Thanks PyImageSearch!
 # import the necessary packages
 import argparse
+
 import cv2
 
 # initialize the list of reference points and boolean indicating
@@ -10,34 +11,36 @@ import cv2
 refPt = []
 cropping = False
 
+
 def click_and_crop(event, x, y, flags, param):
-	# grab references to the global variables
-	global refPt, cropping
+    # grab references to the global variables
+    global refPt, cropping
 
-	# if the left mouse button was clicked, record the starting
-	# (x, y) coordinates and indicate that cropping is being
-	# performed
-	if event == cv2.EVENT_LBUTTONDOWN:
-		refPt = [(x, y)]
-		cropping = True
+    # if the left mouse button was clicked, record the starting
+    # (x, y) coordinates and indicate that cropping is being
+    # performed
+    if event == cv2.EVENT_LBUTTONDOWN:
+        refPt = [(x, y)]
+        cropping = True
 
-	# check to see if the left mouse button was released
-	elif event == cv2.EVENT_LBUTTONUP:
-		# record the ending (x, y) coordinates and indicate that
-		# the cropping operation is finished
-		refPt.append((x, y))
-		cropping = False
+    # check to see if the left mouse button was released
+    elif event == cv2.EVENT_LBUTTONUP:
+        # record the ending (x, y) coordinates and indicate that
+        # the cropping operation is finished
+        refPt.append((x, y))
+        cropping = False
 
-		# draw a rectangle around the region of interest
-		cv2.rectangle(image, refPt[0], refPt[1], (0, 255, 0), 2)
-		cv2.imshow("image", image)
+        # draw a rectangle around the region of interest
+        cv2.rectangle(image, refPt[0], refPt[1], (0, 255, 0), 2)
+        cv2.imshow("image", image)
+
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True, help="Path to the image")
 args = vars(ap.parse_args())
 
-# load the image, clone it, and setup the mouse callback function
+# load the image, clone it, and setup the mouse callback
 image = cv2.imread(args["image"])
 image = cv2.cvtColor(image, cv2.COLOR_BGR2LUV)
 clone = image.copy()
@@ -47,20 +50,20 @@ cv2.setMouseCallback("image", click_and_crop)
 
 # keep looping until the 'q' key is pressed
 while True:
-	# display the image and wait for a keypress
-	cv2.imshow("image", image)
-	key = cv2.waitKey(1) & 0xFF
+    # display the image and wait for a keypress
+    cv2.imshow("image", image)
+    key = cv2.waitKey(1) & 0xFF
 
-	# if the 'r' key is pressed, reset the cropping region
-	if key == ord("r"):
-		image = clone.copy()
+    # if the 'r' key is pressed, reset the cropping region
+    if key == ord("r"):
+        image = clone.copy()
 
-	# if the 'c' key is pressed, break from the loop
-	elif key == ord("c"):
-		break
+    # if the 'c' key is pressed, break from the loop
+    elif key == ord("c"):
+        break
 
 # if there are two reference points, then crop the region of interest
-# from teh image and display it
+# from the image and display it
 
 avgB = 0
 avgG = 0
@@ -70,19 +73,16 @@ total = 0
 if len(refPt) == 2:
     for i in range(refPt[0][0], refPt[1][0], 1):
         for j in range(refPt[0][1], refPt[1][1], 1):
-                avgB += clone[j, i, 0]
-                avgG += clone[j, i, 1]
-                avgR += clone[j, i, 2]
-                total += 1
+            avgB += clone[j, i, 0]
+            avgG += clone[j, i, 1]
+            avgR += clone[j, i, 2]
+            total += 1
 
     avgB = int(avgB / total)
     avgG = int(avgG / total)
     avgR = int(avgR / total)
-    
+
     print([avgB, avgG, avgR])
-    # roi = clone[refPt[0][1]:refPt[1][1], refPt[0][0]:refPt[1][0]]
-	# cv2.imshow("ROI", roi)
-	# cv2.waitKey(0)
 
 # close all open windows
 cv2.destroyAllWindows()
