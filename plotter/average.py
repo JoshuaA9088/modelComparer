@@ -1,60 +1,52 @@
 import argparse
-import numpy as np
-import math
-import matplotlib.pyplot as plt; plt.rcdefaults()
+
 import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcdefaults()
 
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--input_dir", required=True,
-                help="Input path of data file")
+ap.add_argument("-i", "--input", required=True, help="Input path of data file")
 
 args = vars(ap.parse_args())
 
 try:
     f = open(args["input_dir"], "r")
-except FileNotFoundError or FileExistsError:
+except FileNotFoundError:
     print("Input path not valid")
-    exit(0)
+    exit(-1)
 
-lineCount = 0
-
-cvChassis = []
-dnnChassis = []
-cvBoard = []
-dnnBoard = []
+cvDetector_list = []
+dnnDetector_list = []
 
 for line in f.readlines():
-    lineCount += 1
-    # If a detection is missing skip
-    # if line.split()[1] == None or line.split()[2] == None: continue
     try:
-        cvChassis.append(float(line.split()[1]))
-        cvBoard.append(float(line.split()[2]))
-        dnnChassis.append(float(line.split()[3]))
-        dnnBoard.append(float(line.split()[4]))
-    except:
+        cvDetector_list.append(float(line.split()[1]))
+        dnnDetector_list.append(float(line.split()[2]))
+    # Skip malformed data.
+    except IndexError:
         continue
 
-cvChassis = sum(cvChassis) / lineCount
-dnnChassis = sum(dnnChassis) / lineCount
-cvBoard = sum(cvBoard) / lineCount
-dnnBoard = sum(dnnBoard) / lineCount
-# dnnDetector = dnnDetector / lineCount
+cvDetector = sum(cvDetector_list)
+dnnDetector = sum(dnnDetector_list)
 
-objects = ("cvChassis", "dnnChassis", "cvBoard", "dnnBoard")
+cvDetector = cvDetector / len(cvDetector)
+dnnDetector = dnnDetector / len(dnnDetector)
+
+objects = ("cvDetector", "dnnDetector")
 
 y_pos = np.arange(len(objects))
-y = [cvChassis, dnnChassis, cvBoard, dnnBoard]
+y = [cvDetector, dnnDetector]
 
-# print("Average CV: %d" % cvDetector)
-# print("Average DNN: %d" % dnnDetector)
+print(f"Average CV: {cvDetector}")
+print(f"Average DNN: {dnnDetector}")
 
-# print("Max CV: %d" % max(cvDetector_list))
-# print("Max DNN: %d" % max(dnnDetector_list))
+print(f"Max CV: {max(cvDetector_list)}")
+print(f"Max DNN: {dnnDetector_list}")
 
-plt.bar(y_pos, y, align='center', alpha=0.5)
+plt.bar(y_pos, y, align="center", alpha=0.5)
 plt.xticks(y_pos, objects)
-plt.ylabel("Average Distance from Actual (# of Pixels)\n (Lower is Better)")
+plt.ylabel("Average Distance from Actual (# of Pixels)")
 plt.title("Object Detection Method vs. Average Distance from Actual")
 
 plt.show()
